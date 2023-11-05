@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using UrlShortner.Web.Areas.Identity;
 using UrlShortner.Web.Data;
+using UrlShortner.Common.Data;
+using UrlShortner.Common.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<IRepository<string, string>, InMemoryRepository<string, string>>();
+builder.Services.AddSingleton<UniqueKeyService>();
+builder.Services.AddSingleton<UrlShortnerService>();
 
 var app = builder.Build();
 
