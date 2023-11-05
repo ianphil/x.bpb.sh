@@ -9,30 +9,27 @@ public class UrlShortnerServiceTests
     public void ShortenUrl_WhenCalled_ReturnsShortenedUrl()
     {
         // Arrange
-        var uniqueKeyService = new UniqueKeyService(new InMemoryCounterStore());
+        var uniqueKeyService = new UniqueKeyService();
         var repository = new InMemoryRepository<string, string>();
         var shortenerService = new UrlShortnerService(uniqueKeyService, repository);
         var originalUrl = "https://example.com/very/long/url/path/that/needs/to/be/shortened";
-
-        var expected = "https://x.bpb.sh/000001";
 
         // Act
         var shortenedUrl = shortenerService.ShortenUrl(originalUrl);
 
         // Assert
         Assert.StartsWith("https://x.bpb.sh/", shortenedUrl);
-        Assert.Equal(expected, shortenedUrl);
     }
 
     [Fact(Skip = "Skipping this test because of a known issue with unique key generation.")]
     public void ShortenUrl_WithExistingKey_ThrowsException()
     {
         // Arrange
-        var uniqueKeyService = new UniqueKeyService(new InMemoryCounterStore());
+        var uniqueKeyService = new UniqueKeyService();
         var repository = new InMemoryRepository<string, string>();
         var shortenerService = new UrlShortnerService(uniqueKeyService, repository);
         var originalUrl = "https://example.com/another/long/url/path";
-        var existingKey = uniqueKeyService.GenerateUniqueKey();
+        var existingKey = uniqueKeyService.GenerateUniqueKey(6);
         repository.Add(existingKey, originalUrl); // Simulate existing shortened URL
 
         // Act & Assert

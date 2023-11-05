@@ -1,26 +1,20 @@
 namespace UrlShortner.Common.Services;
 
-using UrlShortner.Common.Data;
-using UrlShortner.Common.Utils;
+using System.Security.Cryptography;
 
 public class UniqueKeyService
 {
-    private readonly ICounterStore _counterStore;
-
-    public UniqueKeyService(ICounterStore counterStore)
+    public string GenerateUniqueKey(int length)
     {
-        _counterStore = counterStore ?? throw new ArgumentNullException(nameof(counterStore));
-    }
+        const string chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var stringChars = new char[length];
 
-    public string GenerateUniqueKey()
-    {
-        long counterValue;
-        string uniquePath;
+        for (int i = 0; i < stringChars.Length; i++)
+        {
+            int randomIndex = RandomNumberGenerator.GetInt32(chars.Length); // Get a random index
+            stringChars[i] = chars[randomIndex]; // Pick a random character
+        }
 
-        counterValue = _counterStore.GetNextUniqueValue();
-        uniquePath = Base62Converter.FromLong(counterValue);
-
-        // Return the unique path
-        return uniquePath;
+        return new String(stringChars);
     }
 }

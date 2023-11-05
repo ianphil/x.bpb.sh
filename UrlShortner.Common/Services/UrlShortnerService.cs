@@ -15,7 +15,7 @@ public class UrlShortnerService
 
     public string ShortenUrl(string origiinalUrl)
     {
-        string uniquePath = _uniqueKeyService.GenerateUniqueKey();
+        string uniquePath = _uniqueKeyService.GenerateUniqueKey(6);
 
         if (_repository.Contains(uniquePath))
             throw new Exception("Key already exists");
