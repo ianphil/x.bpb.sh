@@ -3,7 +3,7 @@ using UrlShortner.Common.Services;
 
 public class UrlShortnerService
 {
-    const string baseUrl = "https://x.bpb.sh";
+    const string baseUrl = "http://x.bpb.sh:5220";
     private readonly UniqueKeyService _uniqueKeyService;
     private readonly IRepository<string, string> _repository;
 
@@ -23,5 +23,19 @@ public class UrlShortnerService
             _repository.Add(uniquePath, origiinalUrl);
 
         return $"{baseUrl}/{uniquePath}";
+    }
+
+    public string LengthenUrl(string shortUrl)
+    {
+        var key = new Uri(shortUrl).AbsolutePath;
+
+        try
+        {
+            return _repository.Get(key);
+        }
+        catch (KeyNotFoundException up)
+        {
+            return up.Message;
+        }
     }
 }

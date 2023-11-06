@@ -18,7 +18,7 @@ public class UrlShortnerServiceTests
         var shortenedUrl = shortenerService.ShortenUrl(originalUrl);
 
         // Assert
-        Assert.StartsWith("https://x.bpb.sh/", shortenedUrl);
+        Assert.StartsWith("http://x.bpb.sh:5220/", shortenedUrl);
     }
 
     [Fact(Skip = "Skipping this test because of a known issue with unique key generation.")]
